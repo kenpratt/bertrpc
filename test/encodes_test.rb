@@ -9,7 +9,7 @@ class EncodesTest < Test::Unit::TestCase
     context "ruby request encoder" do
       should "return BERT-RPC encoded request" do
         bert = "\203h\004d\000\004calld\000\005mymodd\000\005myfunl\000\000\000\003a\001a\002a\003j"
-        assert_equal bert, @enc.encode_ruby_request(t[:call, :mymod, :myfun, [1, 2, 3]])
+        assert_equal to_bytes(bert), to_bytes(@enc.encode_ruby_request(t[:call, :mymod, :myfun, [1, 2, 3]]))
       end
     end
 

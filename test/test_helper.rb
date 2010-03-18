@@ -10,3 +10,9 @@ require 'bertrpc'
 class Enc
   include BERTRPC::Encodes
 end
+
+def to_bytes(str)
+  bytes = []
+  str.each_byte {|b| bytes << b }
+  bytes
+end
