@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'test_helper'
 
 class ActionTest < Test::Unit::TestCase
@@ -59,6 +60,17 @@ class ActionTest < Test::Unit::TestCase
         io.expects(:close)
         @call.expects(:connect_to).returns(io)
         assert_equal "bar", @call.transaction("foo")
+      end
+
+      should "read and write UTF-8 BERT-Ps from the socket" do
+        io = stub()
+        io.expects(:write).with("\000\000\000\006")
+        io.expects(:write).with("foo’")
+        @call.expects(:read).with(io, 4, nil).returns("\000\000\000\003")
+        @call.expects(:read).with(io, 3, nil).returns("bar")
+        io.expects(:close)
+        @call.expects(:connect_to).returns(io)
+        assert_equal "bar", @call.transaction("foo’")
       end
 
       should "raise a ProtocolError when the length is invalid" do
